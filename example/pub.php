@@ -12,7 +12,7 @@ $natsClient = $client->getQueue('nats');
 
 try{
     $natsClient->driver();
-    $natsClient->publish('FOO', 'bar',213);
+    $natsClient->publish('FOO', 'bar', 11);
 }catch(\Exception $e){
     echo $e->getCode();
     echo $e->getMessage();

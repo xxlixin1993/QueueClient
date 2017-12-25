@@ -1,9 +1,13 @@
 <?php
-namespace queue\nats;
 
 /**
- * Class ServerInfo
+ * ServerInfo.php
+ * Manage server info
+ * User: lixin
+ * Date: 17-12-22
  */
+namespace queue\nats;
+
 class ServerInfo
 {
 

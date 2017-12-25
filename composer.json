@@ -1,11 +1,11 @@
 {
   "name": "client/nats",
-  "description": "A nats.io client in PHP",
+  "description": "A nats or redis queue client in PHP",
   "type": "library",
   "minimum-stability": "dev",
   "license": "MIT",
   "require": {
-
+    "phpunit/phpunit": "6.5.5"
   },
   "authors": [
     {
