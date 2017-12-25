@@ -75,9 +75,8 @@ class NatsQueue implements IQueue
         if ($timeout === 0) {
             $timeout = $this->options->getTimeout();
         }
-        
-        $this->socket = $this->getSocket($this->options->getAddress(), $timeout);
 
+        $this->socket = $this->getSocket($this->options->getAddress(), $timeout);
 
         $msg = 'CONNECT ' . $this->options;
         $this->send($msg);
@@ -119,7 +118,7 @@ class NatsQueue implements IQueue
     }
 
     public function subscriber($subject, \Closure $callback)
-    {   
+    {
         $sid = '11123';
         $msg = 'SUB ' . $subject . ' ' . $sid;
         $this->send($msg);
