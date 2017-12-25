@@ -13,6 +13,12 @@ use queue\interfaces\IQueue;
 class NatsQueue implements IQueue
 {
     /**
+     * Subscriptions
+     * @var array
+     */
+    private $subscriptions = [];
+
+    /**
      * Server config
      * @var ServerInfo
      */
@@ -57,7 +63,6 @@ class NatsQueue implements IQueue
         }
     }
 
-
     /**
      * Nats Queue Driver
      * @throws \Exception
@@ -89,22 +94,65 @@ class NatsQueue implements IQueue
 
     /**
      * Send message
-     * @param string $subject Commend
+     * @param string $subject Queue name
      * @param string $data Send data
-     * @param int $id Client id
+     * @param int $inbox The reply inbox subject that subscribers can use to send
+     *                   a response back to the publisher/requestor
      * @return mixed
      * @author lixin
      */
-    public function publish($subject, $data, $id)
+    public function publish($subject, $data = null, $inbox = null)
     {
         $msg = 'PUB ' . $subject;
-        if ($id !== null) {
-            $msg = $msg . ' ' . $id;
+        if ($inbox !== null) {
+            $msg = $msg . ' ' . $inbox;
         }
 
         $msg = $msg . ' ' . strlen($data);
         $this->send($msg . "\r\n" . $data);
         $this->pubs += 1;
+    }
+
+    public function subscriber($subject, \Closure $callback)
+    {   
+        $sid = '11123';
+        $msg = 'SUB ' . $subject . ' ' . $sid;
+        $this->send($msg);
+        $this->subscriptions[$sid] = $callback;
+        return $sid;
+    }
+
+
+    public function wait($quantity = 0)
+    {
+        $count = 0;
+        $info = stream_get_meta_data($this->socket);
+
+        while (is_resource($this->socket) === true && feof($this->socket) === false && empty($info['timed_out']) === true) {
+            $line = $this->receive();
+
+            if ($line === false) {
+                return null;
+            }
+
+            if (strpos($line, 'PING') === 0) {
+                $this->handlePING();
+            }
+
+            if (strpos($line, 'MSG') === 0) {
+                $count++;
+                $this->handleMSG($line);
+                if (($quantity !== 0) && ($count >= $quantity)) {
+                    return $this;
+                }
+            }
+
+            $info = stream_get_meta_data($this->socket);
+        }
+
+        $this->close();
+
+        return $this;
     }
 
     /**
@@ -190,6 +238,56 @@ class NatsQueue implements IQueue
         }
 
         return $line;
+    }
+
+    /**
+     * Handles PING command.
+     *
+     * @return void
+     */
+    private function handlePING()
+    {
+        $this->send('PONG');
+    }
+
+    /**
+     * Handles MSG command.
+     *
+     * @param string $line Message command from Nats.
+     *
+     * @return             void
+     * @throws             Exception If subscription not found.
+     * @codeCoverageIgnore
+     */
+    private function handleMSG($line)
+    {
+        $parts = explode(' ', $line);
+        $subject = null;
+        $length = trim($parts[3]);
+        $sid = $parts[2];
+
+        if (count($parts) === 5) {
+            $length = trim($parts[4]);
+            $subject = $parts[3];
+        } else if (count($parts) === 4) {
+            $length = trim($parts[3]);
+            $subject = $parts[1];
+        }
+
+        $payload = $this->receive($length);
+
+        $msg = new Response($subject, $payload, $sid, $this);
+
+        if (isset($this->subscriptions[$sid]) === false) {
+//            throw Exception::forSubscriptionNotFound($sid);
+        }
+
+        $func = $this->subscriptions[$sid];
+        if (is_callable($func) === true) {
+            $func($msg);
+        } else {
+//            throw Exception::forSubscriptionCallbackInvalid($sid);
+        }
     }
 
     /**
