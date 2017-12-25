@@ -18,10 +18,10 @@ interface IQueue
      * Publish
      * @param string $subject
      * @param string $data
-     * @param int $inbox
+     * @param string $inbox
      * @return mixed
      */
-    public function publish(string $subject, string $data,int $inbox = 0);
+    public function publish(string $subject, string $data,string $inbox = '');
 
     /**
      * Request does a request and executes a callback with the response

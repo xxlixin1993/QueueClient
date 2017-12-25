@@ -101,15 +101,15 @@ class NatsQueue implements IQueue
      * Send message
      * @param string $subject Queue name
      * @param string $data Send data
-     * @param int $inbox The reply inbox subject that subscribers can use to send
+     * @param string $inbox The reply inbox subject that subscribers can use to send
      *                   a response back to the publisher/requestor
      * @return mixed
      * @author lixin
      */
-    public function publish(string $subject, string $data,int $inbox = 0)
+    public function publish(string $subject, string $data,string $inbox = '')
     {
         $msg = 'PUB ' . $subject;
-        if ($inbox !== 0) {
+        if ($inbox !== '') {
             $msg = $msg . ' ' . $inbox;
         }
 

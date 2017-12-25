@@ -6,13 +6,24 @@
  * Time: 下午7:32
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 $client = new \queue\Factory();
 
 $natsClient = $client->getQueue('nats');
 
-try{
+try {
     $natsClient->driver();
+
+
+    // Request Response.
+    // Responding to requests.
+    $sid = $natsClient->subscribe(
+        'foo',
+        function ($message) {
+            $message->reply('Reply: Hello, ' . $message->getBody() . ' !!!');
+        }
+    );
+
     // Request.
     $natsClient->request(
         'foo',
@@ -21,7 +32,7 @@ try{
             echo $message->getBody();
         }
     );
-}catch(\Exception $e){
+} catch (\Exception $e) {
     echo $e->getCode();
     echo $e->getMessage();
 }
