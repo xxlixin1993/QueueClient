@@ -279,14 +279,14 @@ class NatsQueue implements IQueue
         $msg = new Response($subject, $payload, $sid, $this);
 
         if (isset($this->subscriptions[$sid]) === false) {
-//            throw Exception::forSubscriptionNotFound($sid);
+            throw new \Exception('Callback function can not be found');
         }
 
         $func = $this->subscriptions[$sid];
         if (is_callable($func) === true) {
             $func($msg);
         } else {
-//            throw Exception::forSubscriptionCallbackInvalid($sid);
+            throw new \Exception('Func can not callback');
         }
     }
 
