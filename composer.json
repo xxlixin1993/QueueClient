@@ -1,0 +1,29 @@
+{
+  "name": "client/nats",
+  "description": "A nats.io client in PHP",
+  "type": "library",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "require": {
+
+  },
+  "authors": [
+    {
+      "name": "lixin",
+      "email": "xxlixin1993@live.com",
+      "homepage": "https://github.com/xxlixin1993",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "queue": "src"
+    }
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  }
+}
