@@ -8,6 +8,8 @@
 
 namespace queue\nats;
 
+use queue\ErrorCode;
+
 class ConnectOption
 {
     /**
@@ -33,6 +35,12 @@ class ConnectOption
      * @var string
      */
     private $password = null;
+
+    /**
+     * Token to connect
+     * @var string
+     */
+    private $token = null;
 
     /**
      * Client development language
@@ -117,7 +125,6 @@ class ConnectOption
         return $this->port;
     }
 
-
     /**
      * Set port
      * @param int $port Port
@@ -129,7 +136,6 @@ class ConnectOption
         return $this;
     }
 
-
     /**
      * Get username
      * @return string
@@ -138,7 +144,6 @@ class ConnectOption
     {
         return $this->username;
     }
-
 
     /**
      * Set username
@@ -150,7 +155,6 @@ class ConnectOption
         $this->username = $username;
         return $this;
     }
-
 
     /**
      * Get password
@@ -169,6 +173,26 @@ class ConnectOption
     public function setPassword($password)
     {
         $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Get token
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set token
+     * @param string $token Token
+     * @return $this
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
         return $this;
     }
 
@@ -222,7 +246,6 @@ class ConnectOption
         return $this->reconnect;
     }
 
-
     /**
      * Set reconnect
      * @param boolean $reconnect Reconnect flag
@@ -273,7 +296,7 @@ class ConnectOption
     protected function init($options)
     {
         if (is_array($options) === false) {
-            throw new \Exception('The $options Can not be circulated');
+            throw new \Exception('The $options Can not be circulated', ErrorCode::CONNECT_OPTIONS_ERROR);
         }
 
         foreach ($options as $key => $value) {

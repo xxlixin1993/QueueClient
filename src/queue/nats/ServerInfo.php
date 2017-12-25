@@ -10,80 +10,68 @@ namespace queue\nats;
 
 class ServerInfo
 {
-
     /**
-     * Server unique ID
-     *
+     * Server uuid
      * @var string
      */
     private $serverID;
 
     /**
      * Server hostname
-     *
      * @var string
      */
     private $host;
 
     /**
      * Server port
-     *
-     * @var integer
+     * @var int
      */
     private $port;
 
     /**
-     * Server version number
-     *
+     * Server version
      * @var string
      */
     private $version;
 
     /**
      * Server Golang version
-     *
      * @var string
      */
     private $goVersion;
 
     /**
-     * Is authorization required?
-     *
-     * @var boolean
+     * is authorization required?
+     * @var bool
      */
     private $authRequired;
 
     /**
      * Is TLS required?
-     *
-     * @var boolean
+     * @var bool
      */
     private $TLSRequired;
 
     /**
      * Should TLS be verified?
-     *
-     * @var boolean
+     * @var bool
      */
     private $TLSVerify;
 
     /**
      * Is SSL required?
-     *
-     * @var boolean
+     * @var bool
      */
     private $SSLRequired;
 
     /**
      * Max payload size
-     *
-     * @var integer
+     * @var int
      */
     private $maxPayload;
 
     /**
      * Connection URL list
-     *
      * @var array
      */
     private $connectURLs;
@@ -91,7 +79,6 @@ class ServerInfo
 
     /**
      * ServerInfo constructor.
-     *
      * @param string $connectionResponse Connection response Message.
      */
     public function __construct($connectionResponse)
@@ -112,8 +99,7 @@ class ServerInfo
     }
 
     /**
-     * Get the server ID.
-     *
+     * Get the server ID
      * @return string Server ID.
      */
     public function getServerID()
@@ -123,9 +109,7 @@ class ServerInfo
 
     /**
      * Set the server ID
-     *
-     * @param string $serverID Server ID.
-     *
+     * @param string $serverID Server ID
      * @return void
      */
     public function setServerID($serverID)
@@ -134,8 +118,7 @@ class ServerInfo
     }
 
     /**
-     * Get the server host name or ip.
-     *
+     * Get the server host name or ip
      * @return string Server host.
      */
     public function getHost()
@@ -144,10 +127,8 @@ class ServerInfo
     }
 
     /**
-     * Set the server host name or ip.
-     *
-     * @param string $host Server host.
-     *
+     * Set the server host name or ip
+     * @param string $host Server host
      * @return void
      */
     public function setHost($host)
@@ -156,9 +137,8 @@ class ServerInfo
     }
 
     /**
-     * Get server port number.
-     *
-     * @return integer Server port number.
+     * Get server port number
+     * @return int Server port number
      */
     public function getPort()
     {
@@ -166,10 +146,8 @@ class ServerInfo
     }
 
     /**
-     * Set server port number.
-     *
-     * @param integer $port Server port number.
-     *
+     * Set server port number
+     * @param integer $port Server port number
      * @return void
      */
     public function setPort($port)
@@ -178,9 +156,8 @@ class ServerInfo
     }
 
     /**
-     * Get server version number.
-     *
-     * @return string Server version number.
+     * Get server version
+     * @return string Server version number
      */
     public function getVersion()
     {
@@ -188,10 +165,8 @@ class ServerInfo
     }
 
     /**
-     * Set server version number.
-     *
-     * @param string $version Server version number.
-     *
+     * Set server version
+     * @param string $version Server version number
      * @return void
      */
     public function setVersion($version)
@@ -200,9 +175,8 @@ class ServerInfo
     }
 
     /**
-     * Get the golang version number.
-     *
-     * @return string Go version number.
+     * Get the golang version number
+     * @return string Go version number
      */
     public function getGoVersion()
     {
@@ -210,10 +184,8 @@ class ServerInfo
     }
 
     /**
-     * Set the golang version number.
-     *
-     * @param string $goVersion Go version number.
-     *
+     * Set the golang version number
+     * @param string $goVersion Go version number
      * @return void
      */
     public function setGoVersion($goVersion)
@@ -222,9 +194,8 @@ class ServerInfo
     }
 
     /**
-     * Check if server requires authorization.
-     *
-     * @return boolean If auth is required.
+     * Check if server requires authorization
+     * @return bool
      */
     public function isAuthRequired()
     {
@@ -232,10 +203,8 @@ class ServerInfo
     }
 
     /**
-     * Set if the server requires authorization.
-     *
-     * @param boolean $authRequired If auth is required.
-     *
+     * Set if the server requires authorization
+     * @param bool $authRequired Is auth required?
      * @return void
      */
     public function setAuthRequired($authRequired)
@@ -244,9 +213,8 @@ class ServerInfo
     }
 
     /**
-     * Check if server requires TLS.
-     *
-     * @return boolean If TLS is required.
+     * Check if server requires TLS
+     * @return bool Is TLS required?
      */
     public function isTLSRequired()
     {
@@ -254,10 +222,8 @@ class ServerInfo
     }
 
     /**
-     * Set if server requires TLS.
-     *
-     * @param boolean $TLSRequired If TLS is required.
-     *
+     * Set if server requires TLS
+     * @param bool $TLSRequired Is TLS required
      * @return void
      */
     public function setTLSRequired($TLSRequired)
@@ -266,9 +232,8 @@ class ServerInfo
     }
 
     /**
-     * Check if TLS certificate is verified.
-     *
-     * @return boolean If TLS certificate is verified.
+     * Check if TLS certificate is verified
+     * @return bool Is TLS certificate verified?
      */
     public function isTLSVerify()
     {
@@ -276,10 +241,8 @@ class ServerInfo
     }
 
     /**
-     * Set if server verifies TLS certificate.
-     *
-     * @param boolean $TLSVerify If TLS certificate is verified.
-     *
+     * Set if server verifies TLS certificate
+     * @param bool $TLSVerify Is TLS certificate verified?
      * @return void
      */
     public function setTLSVerify($TLSVerify)
@@ -288,9 +251,8 @@ class ServerInfo
     }
 
     /**
-     * Check if SSL is required.
-     *
-     * @return boolean If SSL is required.
+     * Check if SSL is required
+     * @return bool Is SSL required?
      */
     public function isSSLRequired()
     {
@@ -298,10 +260,8 @@ class ServerInfo
     }
 
     /**
-     * Set if SSL is required.
-     *
-     * @param boolean $SSLRequired If SSL is required.
-     *
+     * Set if SSL is required
+     * @param bool $SSLRequired Is SSL required?
      * @return void
      */
     public function setSSLRequired($SSLRequired)
@@ -310,9 +270,8 @@ class ServerInfo
     }
 
     /**
-     * Get the max size of the payload.
-     *
-     * @return integer Size in bytes.
+     * Get the max size of the payload
+     * @return int Size in bytes
      */
     public function getMaxPayload()
     {
@@ -320,10 +279,8 @@ class ServerInfo
     }
 
     /**
-     * Set the max size of the payload.
-     *
-     * @param integer $maxPayload Size in bytes.
-     *
+     * Set the max size of the payload
+     * @param int $maxPayload Size in bytes
      * @return void
      */
     public function setMaxPayload($maxPayload)
@@ -332,9 +289,8 @@ class ServerInfo
     }
 
     /**
-     * Get the server connection URLs.
-     *
-     * @return array List of server connection urls.
+     * Get the server connection URLs
+     * @return array List of server connection urls
      */
     public function getConnectURLs()
     {
@@ -342,10 +298,8 @@ class ServerInfo
     }
 
     /**
-     * Set the server connection URLs.
-     *
-     * @param array $connectURLs List of server connection urls.
-     *
+     * Set the server connection URLs
+     * @param array $connectURLs List of server connection urls
      * @return void
      */
     public function setConnectURLs(array $connectURLs)

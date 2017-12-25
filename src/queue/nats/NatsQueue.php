@@ -8,6 +8,7 @@
  */
 namespace queue\nats;
 
+use queue\ErrorCode;
 use queue\interfaces\IQueue;
 
 class NatsQueue implements IQueue
@@ -66,9 +67,9 @@ class NatsQueue implements IQueue
 
     /**
      * Nats Queue Driver
-     * @param int $timeout Connect timeout
+     * @param int $timeout Socket timeout
      * @throws \Exception
-     * @author lixin
+     * @return void
      */
     public function driver(int $timeout = 0)
     {
@@ -83,7 +84,7 @@ class NatsQueue implements IQueue
         $connectResponse = $this->receive();
 
         if ($this->isErrorResponse($connectResponse) === true) {
-            throw new \Exception('Connect error, Msg: ' . $connectResponse);
+            throw new \Exception('Connect error, Msg: ' . $connectResponse, ErrorCode::CONNECT_ERROR);
         } else {
             $this->processServerInfo($connectResponse);
         }
@@ -92,7 +93,7 @@ class NatsQueue implements IQueue
         $pingResponse = $this->receive();
 
         if ($this->isErrorResponse($pingResponse) === true) {
-            throw new \Exception('Ping error, Msg: ' . $pingResponse);
+            throw new \Exception('Ping error, Msg: ' . $pingResponse, ErrorCode::PING_ERROR);
         }
     }
 
@@ -105,10 +106,10 @@ class NatsQueue implements IQueue
      * @return mixed
      * @author lixin
      */
-    public function publish($subject, $data = null, $inbox = null)
+    public function publish(string $subject, string $data,int $inbox = 0)
     {
         $msg = 'PUB ' . $subject;
-        if ($inbox !== null) {
+        if ($inbox !== 0) {
             $msg = $msg . ' ' . $inbox;
         }
 
@@ -117,17 +118,46 @@ class NatsQueue implements IQueue
         $this->pubs += 1;
     }
 
-    public function subscriber($subject, \Closure $callback)
+    /**
+     * Subscribe
+     * @param string $subject
+     * @param \Closure $callback
+     * @return string
+     */
+    public function subscribe(string $subject, \Closure $callback)
     {
-        $sid = '11123';
+        $sid = $this->uuid();
         $msg = 'SUB ' . $subject . ' ' . $sid;
         $this->send($msg);
         $this->subscriptions[$sid] = $callback;
         return $sid;
     }
 
+    /**
+     * Request does a request and executes a callback with the response
+     * @param string $subject Message topic.
+     * @param string $data Message data.
+     * @param \Closure $callback Closure to be executed as callback.
+     * @return void
+     */
+    public function request(string $subject, string $data, \Closure $callback)
+    {
+        $inbox = '_INBOX.' . $this->uuid();
+        $sid = $this->subscribe(
+            $inbox,
+            $callback
+        );
+        $this->unsubscribe($sid, 1);
+        $this->publish($subject, $data, $inbox);
+        $this->wait(1);
+    }
 
-    public function wait($quantity = 0)
+    /**
+     * Wait message return
+     * @param int $msgNumber Number of messages to wait for
+     * @return $this|null
+     */
+    public function wait(int $msgNumber = 0)
     {
         $count = 0;
         $info = stream_get_meta_data($this->socket);
@@ -146,7 +176,7 @@ class NatsQueue implements IQueue
             if (strpos($line, 'MSG') === 0) {
                 $count++;
                 $this->handleMSG($line);
-                if (($quantity !== 0) && ($count >= $quantity)) {
+                if (($msgNumber !== 0) && ($count >= $msgNumber)) {
                     return $this;
                 }
             }
@@ -199,11 +229,11 @@ class NatsQueue implements IQueue
         while (true) {
             $written = @fwrite($this->socket, $msg);
             if ($written === false) {
-                throw new \Exception('Sending data error');
+                throw new \Exception('Sending data error', ErrorCode::SEND_DATA_ERROR);
             }
 
             if ($written === 0) {
-                throw new \Exception('Can not input anything in socket');
+                throw new \Exception('Can not input anything in socket', ErrorCode::SOCKET_ERROR);
             }
 
             $len = ($len - $written);
@@ -245,8 +275,26 @@ class NatsQueue implements IQueue
     }
 
     /**
-     * Handles PING command.
-     *
+     * Unsubscribe from a event given a subject.
+     * @param string $sid Subscription ID.
+     * @param integer $quantity Quantity of messages.
+     * @return void
+     */
+    private function unSubscribe($sid, $quantity = null)
+    {
+        $msg = 'UNSUB ' . $sid;
+        if ($quantity !== null) {
+            $msg = $msg . ' ' . $quantity;
+        }
+
+        $this->send($msg);
+        if ($quantity === null) {
+            unset($this->subscriptions[$sid]);
+        }
+    }
+
+    /**
+     * Handles PING command
      * @return void
      */
     private function handlePING()
@@ -256,12 +304,8 @@ class NatsQueue implements IQueue
 
     /**
      * Handles MSG command.
-     *
-     * @param string $line Message command from Nats.
-     *
-     * @return             void
-     * @throws             Exception If subscription not found.
-     * @codeCoverageIgnore
+     * @param $line
+     * @throws \Exception
      */
     private function handleMSG($line)
     {
@@ -283,14 +327,14 @@ class NatsQueue implements IQueue
         $msg = new Response($subject, $payload, $sid, $this);
 
         if (isset($this->subscriptions[$sid]) === false) {
-            throw new \Exception('Callback function can not be found');
+            throw new \Exception('Callback function can not be found', ErrorCode::CALLBACK_FUNCTION_ERROR);
         }
 
         $func = $this->subscriptions[$sid];
         if (is_callable($func) === true) {
             $func($msg);
         } else {
-            throw new \Exception('Func can not callback');
+            throw new \Exception('Func can not callback', ErrorCode::CALLBACK_FUNCTION_ERROR);
         }
     }
 
@@ -307,7 +351,7 @@ class NatsQueue implements IQueue
         $fp = stream_socket_client($address, $errNo, $errString, $timeout, STREAM_CLIENT_CONNECT);
 
         if ($fp === false) {
-            throw new \Exception('Create socket error: ' . $errString, $errNo);
+            throw new \Exception('Create socket error: ' . $errString, ErrorCode::SOCKET_ERROR);
         }
 
         $timeout = number_format($timeout, 3);
@@ -340,5 +384,13 @@ class NatsQueue implements IQueue
         $this->serverInfo = new ServerInfo($connectionResponse);
     }
 
+    /**
+     * Create uuid
+     * @return string
+     */
+    private function uuid()
+    {
+        return md5(time() . mt_rand(1, 1000000) . uniqid());
+    }
 
 }

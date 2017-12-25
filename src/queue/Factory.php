@@ -20,7 +20,7 @@ class Factory
      * @throws \Exception
      * @author lixin
      */
-    public static function getQueue(string $type) : IQueue
+    public static function getQueue(string $type): IQueue
     {
         switch ($type) {
             case 'redis':
@@ -32,7 +32,7 @@ class Factory
                 return new NatsQueue();
                 break;
             default:
-                throw new \Exception('Unsupported driver');
+                throw new \Exception('Unsupported driver', ErrorCode::UNSUPPORTED_DRIVER);
                 break;
         }
     }

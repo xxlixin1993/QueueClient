@@ -11,35 +11,29 @@ namespace queue\nats;
 
 class Response
 {
-
     /**
-     * Message Subject.
-     *
+     * Message Subject
      * @var string
      */
     private $subject;
 
     /**
-     * Message Body.
-     *
+     * Message Body
      * @var string
      */
     public $body;
 
     /**
-     * Message Ssid.
-     *
+     * Message Sid
      * @var string
      */
     private $sid;
 
     /**
-     * Message related connection.
-     *
+     * Message related connection
      * @var NatsQueue
      */
     private $conn;
-
 
     /**
      * Message constructor.
@@ -57,25 +51,19 @@ class Response
         $this->setConn($conn);
     }
 
-
     /**
      * Set subject.
-     *
-     * @param string $subject Subject.
-     *
+     * @param string $subject Subject
      * @return $this
      */
     public function setSubject($subject)
     {
         $this->subject = $subject;
-
         return $this;
     }
 
-
     /**
-     * Get subject.
-     *
+     * Get subject
      * @return string
      */
     public function getSubject()
@@ -83,12 +71,9 @@ class Response
         return $this->subject;
     }
 
-
     /**
-     * Set body.
-     *
-     * @param string $body Body.
-     *
+     * Set body
+     * @param string $body Body
      * @return $this
      */
     public function setBody($body)
@@ -97,10 +82,8 @@ class Response
         return $this;
     }
 
-
     /**
-     * Get body.
-     *
+     * Get body
      * @return string
      */
     public function getBody()
@@ -108,12 +91,9 @@ class Response
         return $this->body;
     }
 
-
     /**
-     * Set Ssid.
-     *
-     * @param string $sid Ssid.
-     *
+     * Set Sid
+     * @param string $sid Sid
      * @return $this
      */
     public function setSid($sid)
@@ -122,10 +102,8 @@ class Response
         return $this;
     }
 
-
     /**
-     * Get Ssid.
-     *
+     * Get Sid
      * @return string
      */
     public function getSid()
@@ -133,10 +111,8 @@ class Response
         return $this->sid;
     }
 
-
     /**
-     * String representation of a message.
-     *
+     * String representation of a message
      * @return string
      */
     public function __toString()
@@ -144,12 +120,9 @@ class Response
         return $this->getBody();
     }
 
-
     /**
-     * Set Conn.
-     *
-     * @param NatsQueue $conn Connection.
-     *
+     * Set Connection
+     * @param NatsQueue $conn Connection
      * @return $this
      */
     public function setConn(NatsQueue $conn)
@@ -158,10 +131,8 @@ class Response
         return $this;
     }
 
-
     /**
-     * Get Conn.
-     *
+     * Get Connection
      * @return NatsQueue
      */
     public function getConn()
@@ -169,12 +140,9 @@ class Response
         return $this->conn;
     }
 
-
     /**
-     * Allows you reply the message with a specific body.
-     *
+     * Allows you reply the message with a specific body
      * @param string $body Body to be set.
-     *
      * @return void
      */
     public function reply($body)
