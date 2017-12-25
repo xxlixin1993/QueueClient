@@ -20,7 +20,7 @@ try {
     $natsClient->publish('FOO', 'bar');
 
     // Wait for 1 message.
-    var_dump($natsClient->wait(1));
+    $natsClient->wait(1);
 
     $natsClient->close();
 } catch (\Exception $e) {

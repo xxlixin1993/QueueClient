@@ -7,7 +7,7 @@ namespace queue\interfaces;
 
 interface IQueue
 {
-    public function driver();
+    public function driver(int $timeout = 0);
     
     public function publish($subject, $payload = null, $inbox = null);
     

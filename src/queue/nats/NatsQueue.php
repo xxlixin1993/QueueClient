@@ -63,14 +63,19 @@ class NatsQueue implements IQueue
         }
     }
 
+
     /**
      * Nats Queue Driver
+     * @param int $timeout Connect timeout
      * @throws \Exception
      * @author lixin
      */
-    public function driver()
+    public function driver(int $timeout = 0)
     {
-        $timeout = $this->options->getTimeout();
+        if ($timeout === 0) {
+            $timeout = $this->options->getTimeout();
+        }
+        
         $this->socket = $this->getSocket($this->options->getAddress(), $timeout);
 
 

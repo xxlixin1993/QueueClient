@@ -50,7 +50,7 @@ class ConnectOption
      * Timeout
      * @var int
      */
-    private $timeout = 0;
+    private $timeout = 3;
 
     /**
      * Allows to define parameters
@@ -74,7 +74,7 @@ class ConnectOption
      */
     public function __construct($options = [])
     {
-        if (empty($options) === false) {
+        if (empty($options) === true) {
             $this->init($options);
         }
     }
@@ -209,11 +209,7 @@ class ConnectOption
      */
     public function setTimeout($timeout = 0)
     {
-        if ($timeout === 0) {
-            $this->timeout = intval(ini_get('default_socket_timeout'));
-        } else {
-            $this->timeout = $timeout;
-        }
+        $this->timeout = $timeout;
         return $this;
     }
 
