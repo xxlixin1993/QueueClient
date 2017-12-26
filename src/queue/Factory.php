@@ -24,11 +24,9 @@ class Factory
     {
         switch ($type) {
             case 'redis':
-                //TODO config
                 return new RedisQueue();
                 break;
             case 'nats':
-                //TODO config
                 return new NatsQueue();
                 break;
             default:

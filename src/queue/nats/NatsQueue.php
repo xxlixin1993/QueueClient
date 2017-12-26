@@ -277,18 +277,18 @@ class NatsQueue implements IQueue
     /**
      * Unsubscribe from a event given a subject.
      * @param string $sid Subscription ID.
-     * @param integer $quantity Quantity of messages.
+     * @param int $quantity Quantity of messages.
      * @return void
      */
-    private function unSubscribe($sid, $quantity = null)
+    private function unSubscribe($sid, $quantity = 0)
     {
         $msg = 'UNSUB ' . $sid;
-        if ($quantity !== null) {
+        if ($quantity !== 0) {
             $msg = $msg . ' ' . $quantity;
         }
 
         $this->send($msg);
-        if ($quantity === null) {
+        if ($quantity === 0) {
             unset($this->subscriptions[$sid]);
         }
     }

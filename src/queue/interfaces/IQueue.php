@@ -52,4 +52,10 @@ interface IQueue
      * @return mixed
      */
     public function close();
+
+    /**
+     * Get connect config
+     * @return mixed
+     */
+    public function getConnectOption();
 }

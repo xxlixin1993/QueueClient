@@ -1,12 +1,13 @@
 <?php
 /**
  * ConnectOption.php
- * Connect option
+ * 描述
  * User: lixin
- * Date: 17-12-25
+ * Date: 17-12-26
  */
 
-namespace queue\nats;
+namespace queue\redis;
+
 
 use queue\ErrorCode;
 
@@ -22,37 +23,13 @@ class ConnectOption
      * Port
      * @var integer
      */
-    private $port = 4222;
-
-    /**
-     * Username
-     * @var string
-     */
-    private $username = null;
+    private $port = 6379;
 
     /**
      * Password
      * @var string
      */
-    private $password = null;
-
-    /**
-     * Token to connect
-     * @var string
-     */
-    private $token = null;
-
-    /**
-     * Client development language
-     * @var string
-     */
-    private $lang = 'php';
-
-    /**
-     * If reconnect mode is enabled.
-     * @var boolean
-     */
-    private $reconnect = true;
+    private $password = '';
 
     /**
      * Timeout
@@ -67,12 +44,8 @@ class ConnectOption
     private $configurable = [
         'host',
         'port',
-        'user',
-        'pass',
-        'token',
-        'lang',
+        'password',
         'timeout',
-        'reconnect',
     ];
 
     /**
@@ -85,15 +58,6 @@ class ConnectOption
         if (empty($options) === true) {
             $this->init($options);
         }
-    }
-
-    /**
-     * Get Address
-     * @return string
-     */
-    public function getAddress()
-    {
-        return 'tcp://' . $this->host . ':' . $this->port;
     }
 
     /**
@@ -137,26 +101,6 @@ class ConnectOption
     }
 
     /**
-     * Get username
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set username
-     * @param string $username
-     * @return $this
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-        return $this;
-    }
-
-    /**
      * Get password
      * @return string
      */
@@ -173,46 +117,6 @@ class ConnectOption
     public function setPassword($password)
     {
         $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * Get token
-     * @return string
-     */
-    public function getToken()
-    {
-        return $this->token;
-    }
-
-    /**
-     * Set token
-     * @param string $token Token
-     * @return $this
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
-        return $this;
-    }
-
-    /**
-     * Get language
-     * @return string
-     */
-    public function getLang()
-    {
-        return $this->lang;
-    }
-
-    /**
-     * Set language
-     * @param string $lang Language
-     * @return $this
-     */
-    public function setLang($lang)
-    {
-        $this->lang = $lang;
         return $this;
     }
 
@@ -238,26 +142,6 @@ class ConnectOption
     }
 
     /**
-     * Get reconnect
-     * @return boolean
-     */
-    public function isReconnect()
-    {
-        return $this->reconnect;
-    }
-
-    /**
-     * Set reconnect
-     * @param boolean $reconnect Reconnect flag
-     * @return $this
-     */
-    public function setReconnect($reconnect)
-    {
-        $this->reconnect = $reconnect;
-        return $this;
-    }
-
-    /**
      * Set the connection option
      * @param array $options Connect option config
      * @return void
@@ -274,16 +158,13 @@ class ConnectOption
     public function __toString()
     {
         $option = [
-            'lang' => $this->lang,
+            'host' => $this->host,
+            'port' => $this->port,
+            'timeout' => $this->timeout,
         ];
-        if (!empty($this->user)) {
-            $option['username'] = $this->username;
-        }
-
         if (!empty($this->pass)) {
             $option['password'] = $this->password;
         }
-
         return json_encode($option);
     }
 

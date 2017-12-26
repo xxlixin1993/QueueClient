@@ -9,30 +9,71 @@
 namespace queue\redis;
 
 
+use queue\ErrorCode;
 use queue\interfaces\IQueue;
 
-class RedisQueue implements IQueue{
+class RedisQueue implements IQueue
+{
+    /**
+     * Redis
+     * @var mixed
+     */
+    private $conn;
+
+    /**
+     * Redis config
+     * @var mixed
+     */
+    private $options;
+
+    public function __construct(ConnectOption $options = null)
+    {
+        if ($options === null) {
+            $this->options = new ConnectOption();
+        } else {
+            $this->options = $options;
+        }
+    }
 
     /**
      * Set a queue driver
-     * @param int $timeout Socket timeout
-     * @return mixed
+     * @param int $timeout Redis connect timeout
+     * @return void
+     * @throws \Exception
+     * @author lixin
      */
     public function driver(int $timeout = 0)
     {
-        // TODO: Implement driver() method.
+        if ($timeout === 0) {
+            $timeout = $this->options->getTimeout();
+        }
+
+        $this->conn = new \Redis();
+        $connRes = $this->conn->pconnect($this->options->getHost(), $this->options->getPort(), $timeout);
+
+        if (!$connRes) {
+            throw new \Exception('Can not connect Redis', ErrorCode::CONNECT_ERROR);
+        }
+
+        $password = $this->options->getPassword();
+        if (!empty($password)) {
+            $authRes = $this->conn->auth($password);
+            if (!$authRes) {
+                throw new \Exception('Cant not auth Redis', ErrorCode::CONNECT_OPTIONS_ERROR);
+            }
+        }
     }
 
     /**
      * Publish
      * @param string $subject
      * @param string $data
-     * @param int $inbox
+     * @param string $inbox Unsupported
      * @return mixed
      */
-    public function publish(string $subject, string $data, int $inbox = 0)
+    public function publish(string $subject, string $data, string $inbox = '')
     {
-        // TODO: Implement publish() method.
+        return $this->conn->publish($subject, $data);
     }
 
     /**
@@ -74,6 +115,12 @@ class RedisQueue implements IQueue{
      */
     public function close()
     {
-        // TODO: Implement close() method.
+        if ($this->conn === null) {
+            return false;
+        }
+
+        $result = $this->conn->close();
+        $this->conn = null;
+        return $result;
     }
 }
