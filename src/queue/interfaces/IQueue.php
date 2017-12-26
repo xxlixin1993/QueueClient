@@ -8,9 +8,16 @@ namespace queue\interfaces;
 interface IQueue
 {
     /**
+     * Get connect config
+     * @return IOption
+     */
+    public function getConnectOption();
+    
+    /**
      * Set a queue driver
      * @param int $timeout Socket timeout
-     * @return mixed
+     * @throws \Exception
+     * @return void
      */
     public function driver(int $timeout = 0);
 
@@ -19,7 +26,8 @@ interface IQueue
      * @param string $subject
      * @param string $data
      * @param string $inbox
-     * @return mixed
+     * @throws \Exception
+     * @return void
      */
     public function publish(string $subject, string $data,string $inbox = '');
 
@@ -28,7 +36,8 @@ interface IQueue
      * @param string $subject
      * @param string $data
      * @param \Closure $callback
-     * @return mixed
+     * @throws \Exception
+     * @return void
      */
     public function request(string $subject, string $data, \Closure $callback);
 
@@ -36,26 +45,23 @@ interface IQueue
      * Subscribe
      * @param string $subject
      * @param \Closure $callback
-     * @return mixed
+     * @throws \Exception
+     * @return string
      */
     public function subscribe(string $subject, \Closure $callback);
 
     /**
      * Wait for message return
      * @param int $msgNumber
+     * @throws \Exception
      * @return mixed
      */
     public function wait(int $msgNumber);
 
     /**
      * Close socket
-     * @return mixed
+     * @return bool
      */
     public function close();
-
-    /**
-     * Get connect config
-     * @return mixed
-     */
-    public function getConnectOption();
+    
 }

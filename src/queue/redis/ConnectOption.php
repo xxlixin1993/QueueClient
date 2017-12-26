@@ -10,8 +10,9 @@ namespace queue\redis;
 
 
 use queue\ErrorCode;
+use queue\interfaces\IOption;
 
-class ConnectOption
+class ConnectOption implements IOption
 {
     /**
      * Host
@@ -74,7 +75,7 @@ class ConnectOption
      * @param string $host Host
      * @return $this
      */
-    public function setHost($host)
+    public function setHost(string $host)
     {
         $this->host = $host;
         return $this;
@@ -94,17 +95,36 @@ class ConnectOption
      * @param int $port Port
      * @return $this
      */
-    public function setPort($port)
+    public function setPort(int $port)
     {
         $this->port = $port;
         return $this;
     }
 
     /**
+     * Set Username
+     * @param string $user
+     * @return $this
+     */
+    public function setUser(string $user)
+    {
+        // TODO: Implement setUser() method.
+    }
+
+    /**
+     * Get Username
+     * @return string
+     */
+    public function getUser()
+    {
+        // TODO: Implement getUser() method.
+    }
+
+    /**
      * Get password
      * @return string
      */
-    public function getPassword()
+    public function getPass()
     {
         return $this->password;
     }
@@ -114,7 +134,7 @@ class ConnectOption
      * @param string $password
      * @return $this
      */
-    public function setPassword($password)
+    public function setPass(string $password)
     {
         $this->password = $password;
         return $this;
@@ -135,7 +155,7 @@ class ConnectOption
      * @param int $timeout Timeout
      * @return $this
      */
-    public function setTimeout($timeout = 0)
+    public function setTimeout(int $timeout = 0)
     {
         $this->timeout = $timeout;
         return $this;
@@ -146,7 +166,7 @@ class ConnectOption
      * @param array $options Connect option config
      * @return void
      */
-    public function setConnectionOptions($options)
+    public function setConnectionOptions(array $options)
     {
         $this->init($options);
     }
@@ -174,7 +194,7 @@ class ConnectOption
      * @throws \Exception
      * @author lixin
      */
-    protected function init($options)
+    protected function init(array $options)
     {
         if (is_array($options) === false) {
             throw new \Exception('The $options Can not be circulated', ErrorCode::CONNECT_OPTIONS_ERROR);

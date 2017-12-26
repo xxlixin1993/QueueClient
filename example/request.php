@@ -12,24 +12,21 @@ $client = new \queue\Factory();
 $natsClient = $client->getQueue('nats');
 
 try {
+    $natsClient->getConnectOption()->setUser('derek')->setPass('T0pS3cr3t')->setPort(4242);
     $natsClient->driver();
-
-
-    // Request Response.
-    // Responding to requests.
+    
     $sid = $natsClient->subscribe(
         'foo',
-        function ($message) {
-            $message->reply('Reply: Hello, ' . $message->getBody() . ' !!!');
+        function ($response) {
+            $response->reply('Reply: Hello, ' . $response->getBody() . ' ^_^!');
         }
     );
 
-    // Request.
     $natsClient->request(
         'foo',
         'bar',
-        function ($message) {
-            echo $message->getBody();
+        function ($response) {
+            echo $response->getBody();
         }
     );
 } catch (\Exception $e) {

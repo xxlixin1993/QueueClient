@@ -13,8 +13,8 @@ $natsClient = $client->getQueue('nats');
 
 try {
     $natsClient->driver();
-    $natsClient->subscribe('FOO', function ($msg) {
-        printf("Data: %s\r\n", $msg->getBody());
+    $natsClient->subscribe('FOO', function ($response) {
+        printf("Data: %s\r\n", $response->getBody());
     });
     
     $natsClient->publish('FOO', 'bar');

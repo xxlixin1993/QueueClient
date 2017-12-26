@@ -11,6 +11,8 @@ $client = new \queue\Factory();
 $natsClient = $client->getQueue('nats');
 
 try{
+//    $natsClient->getConnectOption()->setUser('derek')->setPass('T0pS3cr3t')->setPort(4242);
+
     $natsClient->driver();
     $natsClient->publish('FOO', 'bar', 11);
 }catch(\Exception $e){

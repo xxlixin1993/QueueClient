@@ -45,7 +45,7 @@ class NatsQueue implements IQueue
 
     /**
      * Nats option config
-     * @var mixed
+     * @var ConnectOption
      */
     private $options;
 
@@ -63,7 +63,6 @@ class NatsQueue implements IQueue
             $this->options = $options;
         }
     }
-
 
     /**
      * Nats Queue Driver
@@ -103,7 +102,8 @@ class NatsQueue implements IQueue
      * @param string $data Send data
      * @param string $inbox The reply inbox subject that subscribers can use to send
      *                   a response back to the publisher/requestor
-     * @return mixed
+     * @return void
+     * @throws \Exception
      * @author lixin
      */
     public function publish(string $subject, string $data,string $inbox = '')
@@ -122,6 +122,7 @@ class NatsQueue implements IQueue
      * Subscribe
      * @param string $subject
      * @param \Closure $callback
+     * @throws \Exception
      * @return string
      */
     public function subscribe(string $subject, \Closure $callback)
@@ -138,6 +139,7 @@ class NatsQueue implements IQueue
      * @param string $subject Message topic.
      * @param string $data Message data.
      * @param \Closure $callback Closure to be executed as callback.
+     * @throws \Exception
      * @return void
      */
     public function request(string $subject, string $data, \Closure $callback)
@@ -147,7 +149,7 @@ class NatsQueue implements IQueue
             $inbox,
             $callback
         );
-        $this->unsubscribe($sid, 1);
+        $this->unSubscribe($sid, 1);
         $this->publish($subject, $data, $inbox);
         $this->wait(1);
     }
@@ -155,6 +157,7 @@ class NatsQueue implements IQueue
     /**
      * Wait message return
      * @param int $msgNumber Number of messages to wait for
+     * @throws \Exception
      * @return $this|null
      */
     public function wait(int $msgNumber = 0)
@@ -190,14 +193,13 @@ class NatsQueue implements IQueue
     }
 
     /**
-     * Sends PING message.
-     * @return void
+     * Get Nats Connect option
+     * @return ConnectOption
+     * @author lixin
      */
-    public function ping()
+    public function getConnectOption()
     {
-        $msg = 'PING';
-        $this->send($msg);
-        $this->pings += 1;
+        return $this->options;
     }
 
     /**
@@ -243,6 +245,17 @@ class NatsQueue implements IQueue
                 break;
             }
         }
+    }
+
+    /**
+     * Sends PING message.
+     * @return void
+     */
+    private function ping()
+    {
+        $msg = 'PING';
+        $this->send($msg);
+        $this->pings += 1;
     }
 
     /**

@@ -36,6 +36,16 @@ class RedisQueue implements IQueue
     }
 
     /**
+     * Get Redis Connect config
+     * @return ConnectOption
+     * @author lixin
+     */
+    public function getConnectOption()
+    {
+        return $this->options;
+    }
+
+    /**
      * Set a queue driver
      * @param int $timeout Redis connect timeout
      * @return void
@@ -55,7 +65,7 @@ class RedisQueue implements IQueue
             throw new \Exception('Can not connect Redis', ErrorCode::CONNECT_ERROR);
         }
 
-        $password = $this->options->getPassword();
+        $password = $this->options->getPass();
         if (!empty($password)) {
             $authRes = $this->conn->auth($password);
             if (!$authRes) {
@@ -69,11 +79,12 @@ class RedisQueue implements IQueue
      * @param string $subject
      * @param string $data
      * @param string $inbox Unsupported
-     * @return mixed
+     * @throws \Exception
+     * @return void
      */
     public function publish(string $subject, string $data, string $inbox = '')
     {
-        return $this->conn->publish($subject, $data);
+        $this->conn->publish($subject, $data);
     }
 
     /**
@@ -81,7 +92,8 @@ class RedisQueue implements IQueue
      * @param string $subject
      * @param string $data
      * @param \Closure $callback
-     * @return mixed
+     * @throws \Exception
+     * @return void
      */
     public function request(string $subject, string $data, \Closure $callback)
     {
@@ -92,7 +104,8 @@ class RedisQueue implements IQueue
      * Subscribe
      * @param string $subject
      * @param \Closure $callback
-     * @return mixed
+     * @throws \Exception
+     * @return string
      */
     public function subscribe(string $subject, \Closure $callback)
     {
@@ -102,6 +115,7 @@ class RedisQueue implements IQueue
     /**
      * Wait for message return
      * @param int $msgNumber
+     * @throws \Exception
      * @return mixed
      */
     public function wait(int $msgNumber)

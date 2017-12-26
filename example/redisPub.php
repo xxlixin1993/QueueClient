@@ -11,6 +11,7 @@ $client = new \queue\Factory();
 $redisClient = $client->getQueue('redis');
 
 try{
+    $option = $redisClient->getConnectOption()->setPass('123456');
     $redisClient->driver();
     $redisClient->publish('FOO', 'bar');
 }catch(\Exception $e){

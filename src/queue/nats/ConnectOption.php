@@ -9,8 +9,9 @@
 namespace queue\nats;
 
 use queue\ErrorCode;
+use queue\interfaces\IOption;
 
-class ConnectOption
+class ConnectOption implements IOption
 {
     /**
      * Host
@@ -28,13 +29,13 @@ class ConnectOption
      * Username
      * @var string
      */
-    private $username = null;
+    private $user = null;
 
     /**
      * Password
      * @var string
      */
-    private $password = null;
+    private $pass = null;
 
     /**
      * Token to connect
@@ -47,12 +48,6 @@ class ConnectOption
      * @var string
      */
     private $lang = 'php';
-
-    /**
-     * If reconnect mode is enabled.
-     * @var boolean
-     */
-    private $reconnect = true;
 
     /**
      * Timeout
@@ -72,7 +67,6 @@ class ConnectOption
         'token',
         'lang',
         'timeout',
-        'reconnect',
     ];
 
     /**
@@ -110,7 +104,7 @@ class ConnectOption
      * @param string $host Host
      * @return $this
      */
-    public function setHost($host)
+    public function setHost(string $host)
     {
         $this->host = $host;
         return $this;
@@ -130,29 +124,29 @@ class ConnectOption
      * @param int $port Port
      * @return $this
      */
-    public function setPort($port)
+    public function setPort(int $port)
     {
         $this->port = $port;
         return $this;
     }
 
     /**
-     * Get username
+     * Get user
      * @return string
      */
-    public function getUsername()
+    public function getUser()
     {
-        return $this->username;
+        return $this->user;
     }
 
     /**
-     * Set username
-     * @param string $username
+     * Set user
+     * @param string $user
      * @return $this
      */
-    public function setUsername($username)
+    public function setUser(string $user)
     {
-        $this->username = $username;
+        $this->user = $user;
         return $this;
     }
 
@@ -160,19 +154,19 @@ class ConnectOption
      * Get password
      * @return string
      */
-    public function getPassword()
+    public function getPass()
     {
-        return $this->password;
+        return $this->pass;
     }
 
     /**
-     * Set password
-     * @param string $password
+     * Set pass
+     * @param string $pass
      * @return $this
      */
-    public function setPassword($password)
+    public function setPass(string $pass)
     {
-        $this->password = $password;
+        $this->pass = $pass;
         return $this;
     }
 
@@ -231,29 +225,9 @@ class ConnectOption
      * @param int $timeout Timeout
      * @return $this
      */
-    public function setTimeout($timeout = 0)
+    public function setTimeout(int $timeout = 0)
     {
         $this->timeout = $timeout;
-        return $this;
-    }
-
-    /**
-     * Get reconnect
-     * @return boolean
-     */
-    public function isReconnect()
-    {
-        return $this->reconnect;
-    }
-
-    /**
-     * Set reconnect
-     * @param boolean $reconnect Reconnect flag
-     * @return $this
-     */
-    public function setReconnect($reconnect)
-    {
-        $this->reconnect = $reconnect;
         return $this;
     }
 
@@ -262,7 +236,7 @@ class ConnectOption
      * @param array $options Connect option config
      * @return void
      */
-    public function setConnectionOptions($options)
+    public function setConnectionOptions(array $options)
     {
         $this->init($options);
     }
@@ -277,11 +251,11 @@ class ConnectOption
             'lang' => $this->lang,
         ];
         if (!empty($this->user)) {
-            $option['username'] = $this->username;
+            $option['user'] = $this->user;
         }
 
         if (!empty($this->pass)) {
-            $option['password'] = $this->password;
+            $option['pass'] = $this->pass;
         }
 
         return json_encode($option);
@@ -293,7 +267,7 @@ class ConnectOption
      * @throws \Exception
      * @author lixin
      */
-    protected function init($options)
+    protected function init(array $options)
     {
         if (is_array($options) === false) {
             throw new \Exception('The $options Can not be circulated', ErrorCode::CONNECT_OPTIONS_ERROR);
