@@ -403,7 +403,7 @@ class NatsQueue implements IQueue
      */
     private function uuid()
     {
-        return md5(time() . mt_rand(1, 1000000) . uniqid());
+        return md5(mt_rand(1, 1000000) . uniqid());
     }
 
 }
