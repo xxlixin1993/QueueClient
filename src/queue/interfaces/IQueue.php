@@ -51,6 +51,23 @@ interface IQueue
     public function subscribe(string $subject, \Closure $callback);
 
     /**
+     * Adds the string value to the head (left) of the list
+     * @param string $subject
+     * @param string $data
+     * @return mixed
+     * @author lixin
+     */
+    public function enQueue(string $subject, string $data);
+
+    /**
+     * Pops a value from the tail of a list,
+     * @param string $subject
+     * @return mixed
+     * @author lixin
+     */
+    public function deQueue(string $subject);
+
+    /**
      * Wait for message return
      * @param int $msgNumber
      * @throws \Exception

@@ -124,6 +124,29 @@ class RedisQueue implements IQueue
     }
 
     /**
+     * Adds the string value to the head (left) of the list
+     * @param string $subject
+     * @param string $data
+     * @return mixed
+     * @author lixin
+     */
+    public function enQueue(string $subject, string $data)
+    {
+        return $this->conn->lpush($subject, $data);
+    }
+    
+    /**
+     * Pops a value from the tail of a list,
+     * @param string $subject
+     * @return mixed
+     * @author lixin
+     */
+    public function deQueue(string $subject)
+    {
+        // TODO: Implement deQueue() method.
+    }
+
+    /**
      * Close socket
      * @return mixed
      */
