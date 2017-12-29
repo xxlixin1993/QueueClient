@@ -5,11 +5,11 @@
  * User: lixin
  * Date: 17-12-22
  */
-namespace queue;
+namespace LQueue;
 
-use queue\interfaces\IQueue;
-use queue\nats\NatsQueue;
-use queue\redis\RedisQueue;
+use LQueue\interfaces\IQueue;
+use LQueue\nats\NatsQueue;
+use LQueue\redis\RedisQueue;
 
 class Factory
 {

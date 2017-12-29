@@ -6,7 +6,7 @@
  * Time: 下午7:54
  */
 
-namespace queue;
+namespace LQueue;
 
 
 class ErrorCode

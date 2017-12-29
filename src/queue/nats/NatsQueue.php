@@ -6,10 +6,10 @@
  * User: lixin
  * Date: 17-12-22
  */
-namespace queue\nats;
+namespace LQueue\nats;
 
-use queue\ErrorCode;
-use queue\interfaces\IQueue;
+use LQueue\ErrorCode;
+use LQueue\interfaces\IQueue;
 
 class NatsQueue implements IQueue
 {

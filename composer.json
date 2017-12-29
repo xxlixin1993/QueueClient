@@ -14,7 +14,7 @@
   ],
   "autoload": {
     "psr-0": {
-      "queue": "src"
+      "LQueue": "src"
     }
   },
   "repositories": {

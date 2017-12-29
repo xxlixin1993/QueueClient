@@ -3,7 +3,7 @@
 /**
  * Interface Queue
  */
-namespace queue\interfaces;
+namespace LQueue\interfaces;
 
 interface IQueue
 {

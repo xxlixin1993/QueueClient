@@ -6,11 +6,11 @@
  * Date: 17-12-26
  */
 
-namespace queue\redis;
+namespace LQueue\redis;
 
 
-use queue\ErrorCode;
-use queue\interfaces\IOption;
+use LQueue\ErrorCode;
+use LQueue\interfaces\IOption;
 
 class ConnectOption implements IOption
 {

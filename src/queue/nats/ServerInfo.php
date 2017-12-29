@@ -6,7 +6,7 @@
  * User: lixin
  * Date: 17-12-22
  */
-namespace queue\nats;
+namespace LQueue\nats;
 
 class ServerInfo
 {

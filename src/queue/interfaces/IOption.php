@@ -6,7 +6,7 @@
  * Date: 17-12-26
  */
 
-namespace queue\interfaces;
+namespace LQueue\interfaces;
 
 
 interface IOption

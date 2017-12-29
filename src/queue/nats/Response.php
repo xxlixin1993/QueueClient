@@ -6,7 +6,7 @@
  * Date: 17-12-25
  */
 
-namespace queue\nats;
+namespace LQueue\nats;
 
 
 class Response

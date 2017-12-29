@@ -6,11 +6,11 @@
  * Date: 17-12-25
  */
 
-namespace queue\redis;
+namespace LQueue\redis;
 
 
-use queue\ErrorCode;
-use queue\interfaces\IQueue;
+use LQueue\ErrorCode;
+use LQueue\interfaces\IQueue;
 
 class RedisQueue implements IQueue
 {

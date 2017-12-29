@@ -6,10 +6,10 @@
  * Date: 17-12-25
  */
 
-namespace queue\nats;
+namespace LQueue\nats;
 
-use queue\ErrorCode;
-use queue\interfaces\IOption;
+use LQueue\ErrorCode;
+use LQueue\interfaces\IOption;
 
 class ConnectOption implements IOption
 {
