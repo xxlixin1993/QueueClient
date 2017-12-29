@@ -1,8 +1,7 @@
 {
-  "name": "client/nats",
+  "name": "queue/LClient",
   "description": "A nats or redis queue client in PHP",
   "type": "library",
-  "minimum-stability": "dev",
   "license": "MIT",
   "require": {
     "phpunit/phpunit": "6.5.5"
