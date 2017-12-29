@@ -1,8 +1,7 @@
 {
-  "name": "queue/LClient",
+  "name": "queue/l-client",
   "description": "A nats or redis queue client in PHP",
   "type": "library",
-  "license": "MIT",
   "require": {
     "phpunit/phpunit": "6.5.5"
   },
@@ -11,7 +10,6 @@
       "name": "lixin",
       "email": "xxlixin1993@live.com",
       "homepage": "https://github.com/xxlixin1993",
-      "role": "Developer"
     }
   ],
   "autoload": {
