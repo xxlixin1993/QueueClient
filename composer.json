@@ -4,7 +4,6 @@
   "type": "library",
   "license": "MIT",
   "keywords": ["queue"],
-  "version": "0.0.1",
   "require": {
     "phpunit/phpunit": "6.5.5"
   },
