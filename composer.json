@@ -2,6 +2,8 @@
   "name": "l-queue/l-client",
   "description": "A nats or redis queue client in PHP",
   "type": "library",
+  "license": "MIT",
+  "minimum-stability": "0.0.1",
   "require": {
     "phpunit/phpunit": "6.5.5"
   },
