@@ -6,7 +6,7 @@
  * Date: 17-12-22
  */
 require_once __DIR__.'/../vendor/autoload.php';
-$client = new \queue\Factory();
+$client = new \LQueue\Factory();
 
 $natsClient = $client->getQueue('nats');
 

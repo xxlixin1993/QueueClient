@@ -6,7 +6,7 @@
  * Date: 17-12-26
  */
 require_once __DIR__.'/../vendor/autoload.php';
-$client = new \queue\Factory();
+$client = new \LQueue\Factory();
 
 $redisClient = $client->getQueue('redis');
 
