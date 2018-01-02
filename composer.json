@@ -18,11 +18,5 @@
     "psr-0": {
       "LQueue": "src"
     }
-  },
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
-    }
   }
 }
