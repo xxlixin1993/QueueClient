@@ -8,8 +8,7 @@ composer require l-queue/l-client
 
 # Basic Usage
 ```
-$client = new \LQueue\Factory();
-$natsClient = $client->getQueue('nats');
+$natsClient = \LQueue\Factory::getQueue('nats');
 $natsClient->driver();
 $natsClient->publish('FOO', 'bar', 11);
 ```
@@ -21,8 +20,7 @@ This library supported publish,request and subscribe function.
 
 ### pub
 ```
-$client = new \LQueue\Factory();
-$natsClient = $client->getQueue('nats');
+$natsClient = \LQueue\Factory::getQueue('nats');
 $natsClient->driver();
 $natsClient->publish('FOO', 'bar', 11);
 $natsClient->close();
@@ -30,8 +28,7 @@ $natsClient->close();
 
 ### subscribe
 ```
-$client = new \LQueue\Factory();
-$natsClient = $client->getQueue('nats');
+$natsClient = \LQueue\Factory::getQueue('nats');
 $natsClient->driver();
 $natsClient->subscribe('FOO', function ($response) {
     printf("Data: %s\r\n", $response->getBody());
@@ -41,8 +38,7 @@ $natsClient->close();
 
 ### pubsub
 ```
-$client = new \LQueue\Factory();
-$natsClient = $client->getQueue('nats');
+$natsClient = \LQueue\Factory::getQueue('nats');
 $natsClient->driver();
 $natsClient->subscribe('FOO', function ($response) {
     printf("Data: %s\r\n", $response->getBody());
@@ -57,8 +53,7 @@ $natsClient->close();
 
 ### request
 ```
-$client = new \LQueue\Factory();
-$natsClient = $client->getQueue('nats');
+$natsClient = \LQueue\Factory::getQueue('nats');
 // set username and password when you config the nats
 $natsClient->getConnectOption()->setUser('derek')->setPass('T0pS3cr3t')->setPort(4242);
 $natsClient->driver();
@@ -101,8 +96,7 @@ Just packaging some redis function.
 
 ### publish
 ```
-$client = new \LQueue\Factory();
-$redisClient = $client->getQueue('redis');
+$redisClient = \LQueue\Factory::getQueue('redis');
 $option = $redisClient->getConnectOption()->setPass('123456');
 $redisClient->driver();
 $redisClient->publish('FOO', 'bar');
@@ -111,8 +105,7 @@ $redisClient->close();
 
 ### Enter the queue use lpush
 ```
-$client = new \LQueue\Factory();
-$redisClient = $client->getQueue('redis');
+$redisClient = \LQueue\Factory::getQueue('redis');
 $option = $redisClient->getConnectOption()->setPass('123456');
 $redisClient->driver();
 $redisClient->enQueue('FOO', 'bar');
@@ -124,8 +117,7 @@ Configure some parameters
 
 ### password
 ```
-$client = new \LQueue\Factory();
-$redisClient = $client->getQueue('redis');
+$redisClient = \LQueue\Factory::getQueue('redis');
 $option = $redisClient->getConnectOption()->setPass('123456');
 ```
 ### host port
