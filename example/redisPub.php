@@ -10,7 +10,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $redisClient = \LQueue\Factory::getQueue('redis');
 
 try{
-    $option = $redisClient->getConnectOption()->setPass('123456');
+//    $option = $redisClient->getConnectOption()->setPass('123456');
     $redisClient->driver();
     $redisClient->publish('FOO', 'bar');
 }catch(\Exception $e){
