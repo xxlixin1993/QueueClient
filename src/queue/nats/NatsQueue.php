@@ -55,6 +55,11 @@ class NatsQueue implements IQueue
      */
     private $socket;
 
+    /**
+     * NatsQueue constructor.
+     * @param ConnectOption|null $options
+     * @author lixin
+     */
     public function __construct(ConnectOption $options = null)
     {
         if ($options === null) {
@@ -239,6 +244,15 @@ class NatsQueue implements IQueue
         $result = fclose($this->socket);
         $this->socket = null;
         return $result;
+    }
+    
+    /**
+     * NatsQueue destructor.
+     * @author lixin
+     */
+    public function __destruct()
+    {
+        $this->close();
     }
 
     /**

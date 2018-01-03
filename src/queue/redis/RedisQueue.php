@@ -26,6 +26,11 @@ class RedisQueue implements IQueue
      */
     private $options;
 
+    /**
+     * RedisQueue constructor.
+     * @param ConnectOption|null $options
+     * @author lixin
+     */
     public function __construct(ConnectOption $options = null)
     {
         if ($options === null) {
@@ -159,5 +164,14 @@ class RedisQueue implements IQueue
         $result = $this->conn->close();
         $this->conn = null;
         return $result;
+    }
+
+    /**
+     * RedisQueue destructor.
+     * @author lixin
+     */
+    public function __destruct()
+    {
+        $this->close();
     }
 }
