@@ -6,9 +6,8 @@
  * Date: 17-12-26
  */
 require_once __DIR__.'/../vendor/autoload.php';
-$client = new \LQueue\Factory();
 
-$redisClient = $client->getQueue('redis');
+$redisClient = \LQueue\Factory::getQueue('redis');
 
 try{
     $option = $redisClient->getConnectOption()->setPass('123456');

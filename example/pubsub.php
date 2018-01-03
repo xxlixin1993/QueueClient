@@ -7,9 +7,8 @@
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
-$client = new \LQueue\Factory();
 
-$natsClient = $client->getQueue('nats');
+$natsClient = \LQueue\Factory::getQueue('nats');
 
 try {
     $natsClient->driver();
