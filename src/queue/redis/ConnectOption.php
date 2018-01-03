@@ -28,9 +28,9 @@ class ConnectOption implements IOption
 
     /**
      * Password
-     * @var string
+     * @var string|null
      */
-    private $password = '';
+    private $password = null;
 
     /**
      * Timeout
@@ -45,7 +45,7 @@ class ConnectOption implements IOption
     private $configurable = [
         'host',
         'port',
-        'password',
+        'pass',
         'timeout',
     ];
 
@@ -182,8 +182,8 @@ class ConnectOption implements IOption
             'port' => $this->port,
             'timeout' => $this->timeout,
         ];
-        if (!empty($this->pass)) {
-            $option['password'] = $this->password;
+        if (!empty($this->password)) {
+            $option['pass'] = $this->password;
         }
         return json_encode($option);
     }

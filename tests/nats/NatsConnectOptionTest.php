@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
 
-class ConnectOptionTest extends TestCase
+class NatsConnectOptionTest extends TestCase
 {
     public function testDefaultSetting()
     {
@@ -23,7 +23,7 @@ class ConnectOptionTest extends TestCase
     {
         $options = new \LQueue\nats\ConnectOption();
         $options->setHost('127.0.0.1')->setPort(4222)->setUser('user')
-            ->setPass('password')->setLang('lang')->setTimeout(2)->setToken('testToken')
+            ->setPass('password')->setTimeout(2)->setToken('testToken')
             ->setLang('php7');
 
         $this->assertEquals('127.0.0.1', $options->getHost());
@@ -76,5 +76,27 @@ class ConnectOptionTest extends TestCase
         $this->assertEquals('testToken', $optionObj->getToken());
         $this->assertEquals('go', $optionObj->getLang());
         $this->assertEquals(5, $optionObj->getTimeout());
+    }
+    
+    public function testToString()
+    {
+        $options = [
+            'host' => '1.1.1.1',
+            'port' => '1234',
+            'user' => 'lixin',
+            'pass' => 'passwd',
+            'token' => 'testToken',
+            'lang' => 'go',
+            'timeout' => '5',
+        ];
+        $optionObj = new \LQueue\nats\ConnectOption();
+        $optionObj->setConnectionOptions($options);
+        
+        $expectedString = json_encode([
+            'lang' => 'go',
+            'user'=>'lixin',
+            'pass'=>'passwd',
+        ]);
+        $this->assertEquals($expectedString, $optionObj->__toString());
     }
 }

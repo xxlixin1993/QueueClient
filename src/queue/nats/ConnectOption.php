@@ -27,19 +27,19 @@ class ConnectOption implements IOption
 
     /**
      * Username
-     * @var string
+     * @var string|null
      */
     private $user = null;
 
     /**
      * Password
-     * @var string
+     * @var string|null
      */
     private $pass = null;
 
     /**
      * Token to connect
-     * @var string
+     * @var string|null
      */
     private $token = null;
 
