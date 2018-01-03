@@ -15,6 +15,11 @@ use LQueue\interfaces\IQueue;
 class RedisQueue implements IQueue
 {
     /**
+     * Redis connect timeout default
+     */
+    const TIMEOUT = 0;
+
+    /**
      * Redis
      * @var mixed
      */
@@ -59,24 +64,9 @@ class RedisQueue implements IQueue
      */
     public function driver(int $timeout = 0)
     {
-        if ($timeout === 0) {
-            $timeout = $this->options->getTimeout();
-        }
-
-        $this->conn = new \Redis();
-        $connRes = $this->conn->pconnect($this->options->getHost(), $this->options->getPort(), $timeout);
-
-        if (!$connRes) {
-            throw new \Exception('Can not connect Redis', ErrorCode::CONNECT_ERROR);
-        }
-
-        $password = $this->options->getPass();
-        if (!empty($password)) {
-            $authRes = $this->conn->auth($password);
-            if (!$authRes) {
-                throw new \Exception('Cant not auth Redis', ErrorCode::CONNECT_OPTIONS_ERROR);
-            }
-        }
+        $connectTimeout = $this->setConnectTimeout($timeout);
+        $this->connect($connectTimeout);
+        $this->setConnectPassword();
     }
 
     /**
@@ -174,4 +164,52 @@ class RedisQueue implements IQueue
     {
         $this->close();
     }
+
+    /**
+     * Config Redis connect timeout
+     * @param int $timeout Redis connect timeout
+     * @return int
+     * @throws \Exception
+     */
+    private function setConnectTimeout(int $timeout) : int
+    {
+        if ($timeout < self::TIMEOUT) {
+            throw new \Exception('Redis timeout can not used', ErrorCode::CONNECT_OPTIONS_ERROR);
+        } else if ($timeout === self::TIMEOUT) {
+            $redisConnectTimeout= $this->options->getTimeout();
+        } else {
+            $redisConnectTimeout= $timeout;
+        }
+        return $redisConnectTimeout;
+    }
+
+    /**
+     * Config Redis connect password
+     * @throws \Exception
+     */
+    private function setConnectPassword()
+    {
+        $password = $this->options->getPass();
+        if (!empty($password)) {
+            $authRes = $this->conn->auth($password);
+            if (!$authRes) {
+                throw new \Exception('Cant not auth Redis', ErrorCode::CONNECT_OPTIONS_ERROR);
+            }
+        }
+    }
+
+    /**
+     * Connect Redis
+     * @param int $timeout
+     * @throws \Exception
+     */
+    private function connect(int $timeout)
+    {
+        $this->conn = new \Redis();
+        $connRes = $this->conn->pconnect($this->options->getHost(), $this->options->getPort(), $timeout);
+        if (!$connRes) {
+            throw new \Exception('Can not connect Redis', ErrorCode::CONNECT_ERROR);
+        }
+    }
+
 }

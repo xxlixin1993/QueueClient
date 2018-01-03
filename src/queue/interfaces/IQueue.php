@@ -80,5 +80,4 @@ interface IQueue
      * @return bool
      */
     public function close();
-    
 }

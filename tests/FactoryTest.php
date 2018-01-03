@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
 {
-
     public function testGetRedisQueue()
     {
         $this->assertInstanceOf(

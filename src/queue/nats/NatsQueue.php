@@ -14,6 +14,11 @@ use LQueue\interfaces\IQueue;
 class NatsQueue implements IQueue
 {
     /**
+     * NatsQueue connect timeout default
+     */
+    const TIMEOUT = 0;
+
+    /**
      * Subscriptions
      * @var array
      */
@@ -77,28 +82,10 @@ class NatsQueue implements IQueue
      */
     public function driver(int $timeout = 0)
     {
-        if ($timeout === 0) {
-            $timeout = $this->options->getTimeout();
-        }
-
-        $this->socket = $this->getSocket($this->options->getAddress(), $timeout);
-
-        $msg = 'CONNECT ' . $this->options;
-        $this->send($msg);
-        $connectResponse = $this->receive();
-
-        if ($this->isErrorResponse($connectResponse) === true) {
-            throw new \Exception('Connect error, Msg: ' . $connectResponse, ErrorCode::CONNECT_ERROR);
-        } else {
-            $this->processServerInfo($connectResponse);
-        }
-
-        $this->ping();
-        $pingResponse = $this->receive();
-
-        if ($this->isErrorResponse($pingResponse) === true) {
-            throw new \Exception('Ping error, Msg: ' . $pingResponse, ErrorCode::PING_ERROR);
-        }
+        $connectTimeout = $this->setConnectTimeout($timeout);
+        $this->socket = $this->getSocket($this->options->getAddress(), $connectTimeout);
+        $this->connect();
+        $this->pingAndHandleResponse();
     }
 
     /**
@@ -253,6 +240,56 @@ class NatsQueue implements IQueue
     public function __destruct()
     {
         $this->close();
+    }
+
+    /**
+     * Config Nats connect timeout
+     * @param int $timeout Nats connect timeout
+     * @return int
+     * @throws \Exception
+     */
+    private function setConnectTimeout(int $timeout) : int
+    {
+        if ($timeout < self::TIMEOUT) {
+            throw new \Exception('Nats timeout can not used', ErrorCode::CONNECT_OPTIONS_ERROR);
+        } else if ($timeout === self::TIMEOUT) {
+            $natsConnectTimeout= $this->options->getTimeout();
+        } else {
+            $natsConnectTimeout= $timeout;
+        }
+        return $natsConnectTimeout;
+    }
+
+    /**
+     * Connect Nats
+     * @return void
+     * @throws \Exception
+     */
+    private function connect()
+    {
+        $msg = 'CONNECT ' . $this->options;
+        $this->send($msg);
+        $connectResponse = $this->receive();
+
+        if ($this->isErrorResponse($connectResponse) === true) {
+            throw new \Exception('Connect error, Msg: ' . $connectResponse, ErrorCode::CONNECT_ERROR);
+        } else {
+            $this->processServerInfo($connectResponse);
+        }
+    }
+
+    /**
+     * Ping Nats server and receive response
+     * @throws \Exception
+     */
+    private function pingAndHandleResponse()
+    {
+        $this->ping();
+        $pingResponse = $this->receive();
+
+        if ($this->isErrorResponse($pingResponse) === true) {
+            throw new \Exception('Ping error, Msg: ' . $pingResponse, ErrorCode::PING_ERROR);
+        }
     }
 
     /**
