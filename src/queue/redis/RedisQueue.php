@@ -70,6 +70,15 @@ class RedisQueue implements IQueue
     }
 
     /**
+     * Check if the client is connected
+     * @return bool
+     */
+    public function isConnected() : bool
+    {
+        return isset($this->conn);
+    }
+
+    /**
      * Publish
      * @param string $subject
      * @param string $data
@@ -102,7 +111,7 @@ class RedisQueue implements IQueue
      * @throws \Exception
      * @return string
      */
-    public function subscribe(string $subject, \Closure $callback)
+    public function subscribe(string $subject, \Closure $callback) : string
     {
         // TODO: Implement subscribe() method.
     }
@@ -147,12 +156,11 @@ class RedisQueue implements IQueue
      */
     public function close()
     {
-        if ($this->conn === null) {
-            return false;
+        $result = false;
+        if ($this->isConnected()) {
+            $result = $this->conn->close();
+            $this->conn = null;
         }
-
-        $result = $this->conn->close();
-        $this->conn = null;
         return $result;
     }
 
@@ -189,12 +197,16 @@ class RedisQueue implements IQueue
      */
     private function setConnectPassword()
     {
-        $password = $this->options->getPass();
-        if (!empty($password)) {
-            $authRes = $this->conn->auth($password);
-            if (!$authRes) {
-                throw new \Exception('Cant not auth Redis', ErrorCode::CONNECT_OPTIONS_ERROR);
+        if ($this->isConnected() === true) {
+            $password = $this->options->getPass();
+            if (!empty($password)) {
+                $authRes = $this->conn->auth($password);
+                if (!$authRes) {
+                    throw new \Exception('Cant not auth Redis', ErrorCode::CONNECT_OPTIONS_ERROR);
+                }
             }
+        } else {
+            throw new \Exception('Can not connect Redis', ErrorCode::CONNECT_ERROR);
         }
     }
 

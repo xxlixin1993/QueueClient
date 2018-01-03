@@ -89,6 +89,15 @@ class NatsQueue implements IQueue
     }
 
     /**
+     * Check if the client is connected
+     * @return bool
+     */
+    public function isConnected(): bool
+    {
+        return isset($this->socket);
+    }
+
+    /**
      * Send message
      * @param string $subject Queue name
      * @param string $data Send data
@@ -117,7 +126,7 @@ class NatsQueue implements IQueue
      * @throws \Exception
      * @return string
      */
-    public function subscribe(string $subject, \Closure $callback)
+    public function subscribe(string $subject, \Closure $callback) : string
     {
         $sid = $this->uuid();
         $msg = 'SUB ' . $subject . ' ' . $sid;

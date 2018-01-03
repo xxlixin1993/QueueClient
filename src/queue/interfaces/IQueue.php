@@ -22,6 +22,12 @@ interface IQueue
     public function driver(int $timeout = 0);
 
     /**
+     * Check if the client is connected
+     * @return bool
+     */
+    public function isConnected() : bool;
+
+    /**
      * Publish
      * @param string $subject
      * @param string $data
@@ -48,7 +54,7 @@ interface IQueue
      * @throws \Exception
      * @return string
      */
-    public function subscribe(string $subject, \Closure $callback);
+    public function subscribe(string $subject, \Closure $callback) : string;
 
     /**
      * Adds the string value to the head (left) of the list
@@ -77,7 +83,6 @@ interface IQueue
 
     /**
      * Close socket
-     * @return bool
      */
     public function close();
 }
