@@ -56,7 +56,7 @@ class ConnectOption implements IOption
      */
     public function __construct($options = [])
     {
-        if (empty($options) === true) {
+        if (!empty($options) === true) {
             $this->init($options);
         }
     }
