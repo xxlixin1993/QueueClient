@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 class RedisConnectOptionTest extends TestCase
 {
+    /**
+     * Test default config
+     */
     public function testDefaultSetting()
     {
         $options = new \LQueue\redis\ConnectOption();
@@ -16,6 +19,9 @@ class RedisConnectOptionTest extends TestCase
         $this->assertEquals(3, $options->getTimeout());
     }
 
+    /**
+     * Test set and get function
+     */
     public function testSettingAndGetting()
     {
         $options = new \LQueue\redis\ConnectOption();
@@ -27,6 +33,9 @@ class RedisConnectOptionTest extends TestCase
         $this->assertEquals(2, $options->getTimeout());
     }
 
+    /**
+     * Test create ConnectOption object
+     */
     public function testCreateConnectOptionObj()
     {
         $options = [
@@ -42,6 +51,9 @@ class RedisConnectOptionTest extends TestCase
         $this->assertEquals(5, $optionObj->getTimeout());
     }
 
+    /**
+     * Test setConnectionOptions function
+     */
     public function testSetConnectionOptions()
     {
         $options = [
@@ -58,6 +70,9 @@ class RedisConnectOptionTest extends TestCase
         $this->assertEquals(5, $optionObj->getTimeout());
     }
 
+    /**
+     * Test __toString function
+     */
     public function testToString()
     {
         $options = [

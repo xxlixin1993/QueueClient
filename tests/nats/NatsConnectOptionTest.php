@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 class NatsConnectOptionTest extends TestCase
 {
+    /**
+     * Test default config
+     */
     public function testDefaultSetting()
     {
         $options = new \LQueue\nats\ConnectOption();
@@ -19,6 +22,9 @@ class NatsConnectOptionTest extends TestCase
         $this->assertEquals(3, $options->getTimeout());
     }
 
+    /**
+     * Test set and get function
+     */
     public function testSettingAndGetting()
     {
         $options = new \LQueue\nats\ConnectOption();
@@ -35,6 +41,9 @@ class NatsConnectOptionTest extends TestCase
         $this->assertEquals(2, $options->getTimeout());
     }
 
+    /**
+     * Test create ConnectOption object
+     */
     public function testCreateConnectOptionObj()
     {
         $options = [
@@ -56,6 +65,9 @@ class NatsConnectOptionTest extends TestCase
         $this->assertEquals(5, $optionObj->getTimeout());
     }
 
+    /**
+     * Test setConnectionOptions function
+     */
     public function testSetConnectionOptions()
     {
         $options = [
@@ -77,7 +89,10 @@ class NatsConnectOptionTest extends TestCase
         $this->assertEquals('go', $optionObj->getLang());
         $this->assertEquals(5, $optionObj->getTimeout());
     }
-    
+
+    /**
+     * Test __toString function
+     */
     public function testToString()
     {
         $options = [

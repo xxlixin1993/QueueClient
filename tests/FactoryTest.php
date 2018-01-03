@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
 {
+    /**
+     * Test get Redis queue object
+     */
     public function testGetRedisQueue()
     {
         $this->assertInstanceOf(
@@ -15,6 +18,9 @@ class FactoryTest extends TestCase
 
     }
 
+    /**
+     * Test get Nats queue object
+     */
     public function testGetNatsQueue()
     {
         $this->assertInstanceOf(
@@ -23,6 +29,9 @@ class FactoryTest extends TestCase
         );
     }
 
+    /**
+     * Test get other queue object
+     */
     public function testGetOtherQueue()
     {
         $this->expectException('Exception');
