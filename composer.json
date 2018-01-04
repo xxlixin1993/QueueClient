@@ -5,6 +5,7 @@
   "license": "MIT",
   "keywords": ["queue"],
   "require": {
+    "php": ">=7.0.0",
     "phpunit/phpunit": "6.5.5"
   },
   "authors": [
