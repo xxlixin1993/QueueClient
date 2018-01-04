@@ -120,6 +120,15 @@ class NatsQueue implements IQueue
     }
 
     /**
+     * Return the number of messages published
+     * @return int
+     */
+    public function getPubCount() : int
+    {
+        return $this->pubs;
+    }
+    
+    /**
      * Subscribe
      * @param string $subject
      * @param \Closure $callback

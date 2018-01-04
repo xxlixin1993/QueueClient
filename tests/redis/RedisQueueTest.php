@@ -30,4 +30,18 @@ class RedisQueueTest extends TestCase
         $client->close();
         $this->assertFalse($client->isConnected());
     }
+
+    /**
+     * Test Publish
+     */
+    public function testPublish()
+    {
+        $options = new \LQueue\redis\ConnectOption();
+        $client = new \LQueue\redis\RedisQueue($options);
+        $client->driver();
+        $client->publish('foo', 'bar');
+        $count = $client->getPubCount();
+        $this->assertInternalType('int', $count);
+        $this->assertEquals(1, $count);
+    }
 }

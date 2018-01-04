@@ -38,6 +38,12 @@ interface IQueue
     public function publish(string $subject, string $data,string $inbox = '');
 
     /**
+     * Return the number of messages published
+     * @return int
+     */
+    public function getPubCount() : int;
+
+    /**
      * Request does a request and executes a callback with the response
      * @param string $subject
      * @param string $data

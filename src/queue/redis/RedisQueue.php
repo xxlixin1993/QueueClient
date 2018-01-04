@@ -20,6 +20,12 @@ class RedisQueue implements IQueue
     const TIMEOUT = 0;
 
     /**
+     * Number of messages published
+     * @var int
+     */
+    private $pubs = 0;
+
+    /**
      * Redis
      * @var mixed
      */
@@ -89,6 +95,16 @@ class RedisQueue implements IQueue
     public function publish(string $subject, string $data, string $inbox = '')
     {
         $this->conn->publish($subject, $data);
+        $this->pubs += 1;
+    }
+
+    /**
+     * Return the number of messages published
+     * @return int
+     */
+    public function getPubCount() : int
+    {
+        return $this->pubs;
     }
 
     /**
@@ -138,7 +154,7 @@ class RedisQueue implements IQueue
     {
         return $this->conn->lpush($subject, $data);
     }
-    
+
     /**
      * Pops a value from the tail of a list,
      * @param string $subject
@@ -184,9 +200,9 @@ class RedisQueue implements IQueue
         if ($timeout < self::TIMEOUT) {
             throw new \Exception('Redis timeout can not used', ErrorCode::CONNECT_OPTIONS_ERROR);
         } else if ($timeout === self::TIMEOUT) {
-            $redisConnectTimeout= $this->options->getTimeout();
+            $redisConnectTimeout = $this->options->getTimeout();
         } else {
-            $redisConnectTimeout= $timeout;
+            $redisConnectTimeout = $timeout;
         }
         return $redisConnectTimeout;
     }

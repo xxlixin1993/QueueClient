@@ -12,16 +12,16 @@ namespace LQueue\nats;
 class Response
 {
     /**
-     * Message Subject
-     * @var string
-     */
-    private $subject;
-
-    /**
      * Message Body
      * @var string
      */
     public $body;
+    
+    /**
+     * Message Subject
+     * @var string
+     */
+    private $subject;
 
     /**
      * Message Sid
@@ -38,10 +38,10 @@ class Response
     /**
      * Message constructor.
      *
-     * @param string     $subject Message subject.
-     * @param string     $body    Message body.
-     * @param string     $sid     Message Sid.
-     * @param NatsQueue $conn    Message Connection.
+     * @param string $subject Message subject.
+     * @param string $body Message body.
+     * @param string $sid Message Sid.
+     * @param NatsQueue $conn Message Connection.
      */
     public function __construct($subject, $body, $sid, NatsQueue $conn)
     {
