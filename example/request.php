@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
+ * request.php
+ * request
  * User: lixin
- * Date: 2017/12/25
- * Time: 下午7:32
+ * Date: 17-12-22
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -11,7 +11,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $natsClient = \LQueue\Factory::getQueue('nats');
 
 try {
-    $natsClient->getConnectOption()->setUser('derek')->setPass('T0pS3cr3t')->setPort(4242);
+//    $natsClient->getConnectOption()->setUser('derek')->setPass('T0pS3cr3t')->setPort(4242);
     $natsClient->driver();
     
     $sid = $natsClient->subscribe(

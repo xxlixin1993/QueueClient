@@ -71,13 +71,6 @@ class ServerInfo
     private $maxPayload;
 
     /**
-     * Connection URL list
-     * @var array
-     */
-    private $connectURLs;
-
-
-    /**
      * ServerInfo constructor.
      * @param string $connectionResponse Connection response Message.
      */
@@ -286,24 +279,5 @@ class ServerInfo
     public function setMaxPayload($maxPayload)
     {
         $this->maxPayload = $maxPayload;
-    }
-
-    /**
-     * Get the server connection URLs
-     * @return array List of server connection urls
-     */
-    public function getConnectURLs()
-    {
-        return $this->connectURLs;
-    }
-
-    /**
-     * Set the server connection URLs
-     * @param array $connectURLs List of server connection urls
-     * @return void
-     */
-    public function setConnectURLs(array $connectURLs)
-    {
-        $this->connectURLs = $connectURLs;
     }
 }
