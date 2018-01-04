@@ -497,5 +497,4 @@ class NatsQueue implements IQueue
     {
         return md5(mt_rand(1, 1000000) . uniqid());
     }
-
 }
